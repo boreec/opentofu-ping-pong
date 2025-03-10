@@ -2,7 +2,21 @@
 
 This server initiates the communication with the Server Pong.
 
-## Usage
+## Running with Docker
+
+Build the image:
+
+```console
+docker build -t server-ping .
+```
+
+Run the container:
+
+```console
+docker run -p 8081:8081 -t server-ping
+```
+
+## Running without Docker
 
 Run the server:
 
