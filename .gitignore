@@ -1,1 +1,6 @@
-target/
+# HCL local cache
+infrastructure/.terraform
+infrastructure/.terraform.lock.hcl
+
+# Rust binary
+server-pong/target/
