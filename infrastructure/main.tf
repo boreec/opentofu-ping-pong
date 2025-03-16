@@ -5,6 +5,7 @@ terraform {
       version = "0.4.4"
     }
   }
+  required_version = "~> 1.9.0"
 }
 
 provider "minikube" {
