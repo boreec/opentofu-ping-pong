@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-pong
+  labels:
+    app: server-pong
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server-pong
+  template:
+    metadata:
+      labels:
+        app: server-pong
+    spec:
+      containers:
+      - name: server-pong
+        image: server-pong:latest
+        ports:
+        - containerPort: 8082

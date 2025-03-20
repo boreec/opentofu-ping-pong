@@ -5,7 +5,7 @@ metadata:
   labels:
     app: server-ping
 spec:
-  replicas: q
+  replicas: 1
   selector:
     matchLabels:
       app: server-ping
