@@ -19,6 +19,7 @@ terraform {
 provider "docker" {}
 
 provider "helm" {
+  debug = true
   kubernetes = {
     config_path = "~/.kube/config"
   }

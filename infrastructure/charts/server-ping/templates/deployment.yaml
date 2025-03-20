@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server-ping
+  name: {{ .Release.Name }}
   labels:
-    app: server-ping
+    app: {{ .Release.Name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: server-ping
+      app: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: server-ping
+        app: {{ .Release.Name }}
     spec:
       containers:
-      - name: server-ping
+      - name: {{ .Release.Name }}
         image: server-ping:latest
         ports:
         - containerPort: 8081
