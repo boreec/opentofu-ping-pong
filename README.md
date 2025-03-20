@@ -1,6 +1,6 @@
-# 🏓 Terraform ping-pong WIP
+# 🧈🏓 OpenTofu ping-pong WIP
 
-This project is a custom implementation using **Terraform** and **Minikube**
+This project is a custom implementation using **Opentofu** and **Minikube**
 featuring two REST servers that continuously exchange ping-pong messages every
 5 seconds.
 
@@ -28,4 +28,10 @@ it is not already running), and deploy resources:
 
 ```console
 make deploy
+```
+
+After use, clean up the resources:
+
+```console
+make clean
 ```
