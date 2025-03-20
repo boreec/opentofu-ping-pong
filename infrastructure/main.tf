@@ -1,13 +1,14 @@
-terraform {
-  required_providers {
-    minikube = {
-      source = "scott-the-programmer/minikube"
-      version = "0.4.4"
-    }
+resource "docker_image" "server_ping_image" {
+  name = "server-ping:latest"
+  build {
+    context    = "${path.module}/../server-ping"
+    dockerfile = "Dockerfile"
   }
-  required_version = "~> 1.9.0"
 }
 
-provider "minikube" {
-  # Configuration options
+resource "helm_release" "server_ping" {
+  name = "server-ping"
+  chart = "${path.module}/charts/server-ping"
+  depends_on = [ docker_image.server_ping_image ]
+  recreate_pods = true
 }

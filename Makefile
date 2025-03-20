@@ -6,7 +6,8 @@ cluster_ready:
 	fi
 
 deploy: cluster_ready
-	cd infrastructure && tofu init
+	cd infrastructure && \
+  sh -c 'eval $$(minikube docker-env) && tofu init && tofu plan && tofu apply --auto-approve'
 
 clean:
 	minikube delete
