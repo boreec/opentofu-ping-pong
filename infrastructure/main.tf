@@ -45,4 +45,18 @@ resource "helm_release" "grafana" {
   repository = "https://grafana.github.io/helm-charts"
   chart      = "grafana"
   depends_on = [helm_release.prometheus]
+  set = [
+    {
+      name  = "service.type"
+      value = "ClusterIP"
+    },
+    {
+      name  = "persistence.enabled"
+      value = "false"
+    },
+    {
+      name  = "adminPassword"
+      value = "admin"
+    },
+  ]
 }
