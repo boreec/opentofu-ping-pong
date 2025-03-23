@@ -10,9 +10,11 @@ featuring two REST servers that continuously exchange ping-pong messages every
 
 ## Requirements
 
-- Docker
-- Minikube
-- OpenTofu
+- [Docker](https://www.docker.com/)
+- [Helm](https://helm.sh/)
+- [Make](https://www.gnu.org/software/make/)
+- [Minikube](https://minikube.sigs.k8s.io/docs/)
+- [OpenTofu](https://opentofu.org/)
 
 ## Contents
 
