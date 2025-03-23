@@ -2,7 +2,7 @@ cluster_ready:
 	@if minikube status | grep -q "Running"; then \
 		echo "Minikube is already running"; \
 	else \
-		minikube start --memory=2048 --disk-size=2g; \
+		minikube start --memory=2048 --disk-size=2g --addons=ingress; \
 	fi
 
 deploy: cluster_ready
