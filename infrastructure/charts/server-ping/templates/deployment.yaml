@@ -17,5 +17,6 @@ spec:
       containers:
       - name: {{ .Release.Name }}
         image: server-ping:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 8081

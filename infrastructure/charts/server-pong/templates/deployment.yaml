@@ -17,5 +17,6 @@ spec:
       containers:
       - name: {{ .Release.Name }}
         image: server-pong:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 8082
