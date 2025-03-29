@@ -35,9 +35,12 @@ resource "helm_release" "server_pong" {
 }
 
 resource "helm_release" "prometheus" {
-  name       = "prometheus"
-  repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "prometheus"
+  cleanup_on_fail = true
+  name       = "prometheus"
+  recreate_pods = true
+  repository = "https://prometheus-community.github.io/helm-charts"
+  replace = true
 }
 
 resource "helm_release" "grafana" {
@@ -58,5 +61,11 @@ resource "helm_release" "grafana" {
       name  = "adminPassword"
       value = "admin"
     },
+    {
+      name  = "service.nodePort"
+      value = "30080"
+    }
   ]
+  recreate_pods = true
+  replace = true
 }
