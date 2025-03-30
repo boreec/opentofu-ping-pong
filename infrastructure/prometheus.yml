@@ -1,0 +1,16 @@
+server:
+  global:
+    scrape_interval: 10s
+  scrape_configs:
+    - job_name: "kubernetes-nodes"
+      kubernetes_sd_configs:
+        - role: node
+    - job_name: "kubernetes-pods"
+      kubernetes_sd_configs:
+        - role: pod
+    - job_name: "kube-state-metrics"
+      static_configs:
+        - targets: ["kube-state-metrics.default.svc.cluster.local:8080"]
+    - job_name: "node-exporter"
+      static_configs:
+        - targets: ["prometheus-node-exporter.default.svc.cluster.local:9100"]

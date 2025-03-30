@@ -11,6 +11,7 @@ resource "helm_release" "prometheus" {
       value = "NodePort"
     }
   ]
+  values = [file("${path.module}/prometheus.yml")]
 }
 
 resource "helm_release" "grafana" {
