@@ -18,6 +18,7 @@ resource "helm_release" "grafana" {
   name       = "grafana"
   chart      = "grafana"
   depends_on = [helm_release.prometheus]
+  force_update = true
   set = [
     {
       name  = "service.type"
@@ -30,10 +31,6 @@ resource "helm_release" "grafana" {
     {
       name  = "persistence.enabled"
       value = "false"
-    },
-    {
-      name  = "adminPassword"
-      value = "admin"
     },
   ]
   recreate_pods = true

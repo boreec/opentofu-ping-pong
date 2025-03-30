@@ -1,3 +1,13 @@
+grafana.ini:
+  auth:
+    disable_login_form: true
+    disable_signout_menu: true
+
+  auth.anonymous:
+    enabled: true
+    org_name: Main Org.
+    org_role: Admin
+
 extraConfigMaps:
   datasources.yaml: |
     apiVersion: 1
