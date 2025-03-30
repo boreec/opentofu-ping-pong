@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/boreec/terraform-ping-pong/server-ping/server"
+	"github.com/boreec/opentofu-ping-pong/server-ping/server"
 )
 
 func main() {
