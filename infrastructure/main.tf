@@ -16,7 +16,6 @@ resource "helm_release" "prometheus" {
 
 resource "helm_release" "grafana" {
   name       = "grafana"
-  repository = "https://grafana.github.io/helm-charts"
   chart      = "grafana"
   depends_on = [helm_release.prometheus]
   set = [
@@ -39,6 +38,8 @@ resource "helm_release" "grafana" {
   ]
   recreate_pods = true
   replace = true
+  repository = "https://grafana.github.io/helm-charts"
+  values = [file("${path.module}/grafana.yml")]
 }
 
 resource "docker_image" "server_ping_image" {
