@@ -21,7 +21,11 @@ resource "helm_release" "grafana" {
   set = [
     {
       name  = "service.type"
-      value = "ClusterIP"
+      value = "NodePort"
+    },
+    {
+      name  = "service.nodePort"
+      value = "30080"
     },
     {
       name  = "persistence.enabled"
@@ -31,10 +35,6 @@ resource "helm_release" "grafana" {
       name  = "adminPassword"
       value = "admin"
     },
-    {
-      name  = "service.nodePort"
-      value = "30080"
-    }
   ]
   recreate_pods = true
   replace = true
