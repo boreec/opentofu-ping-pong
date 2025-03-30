@@ -32,6 +32,12 @@ it is not already running), and deploy resources:
 make deploy
 ```
 
+For monitoring, access the dashboards via Grafana in the browser:
+
+```console
+make open-grafana
+```
+
 After use, clean up the resources:
 
 ```console
