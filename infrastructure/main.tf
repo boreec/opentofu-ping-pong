@@ -78,7 +78,6 @@ resource "helm_release" "server_pong" {
   replace = true
 }
 
-
 resource "helm_release" "kube-state-metrics" {
   chart = "kube-state-metrics"
   cleanup_on_fail = true
@@ -90,4 +89,17 @@ resource "helm_release" "kube-state-metrics" {
   recreate_pods = true
   repository = "https://prometheus-community.github.io/helm-charts"
   replace = true
+}
+
+resource "helm_release" "node_exporter" {
+  chart      = "prometheus-node-exporter"
+  cleanup_on_fail = true
+  depends_on = [
+    helm_release.server_ping,
+    helm_release.server_pong
+  ]
+  name       = "prometheus-node-exporter"
+  recreate_pods = true
+  replace = true
+  repository = "https://prometheus-community.github.io/helm-charts"
 }
