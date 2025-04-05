@@ -1,17 +1,19 @@
-FROM rust:1.85.0 AS builder
-
+FROM lukemathwalker/cargo-chef:latest-rust-1.85.1-slim-bookworm AS chef
 WORKDIR /app
 
+FROM chef AS planner
+COPY ./Cargo.toml ./Cargo.lock ./
+COPY ./src ./src
+RUN cargo chef prepare
+
+FROM chef AS builder
+COPY --from=planner /app/recipe.json .
+RUN cargo chef cook --release
 COPY . .
-
 RUN cargo build --release
+RUN mv ./target/release/server-pong ./app
 
-FROM debian:bookworm-slim
-
+FROM debian:stable-slim AS runtime
 WORKDIR /app
-
-COPY --from=builder /app/target/release/server-pong .
-
-EXPOSE 8082
-
-CMD ["./server-pong"]
+COPY --from=builder /app/app /usr/local/bin/
+ENTRYPOINT ["/usr/local/bin/app"]
