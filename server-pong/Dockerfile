@@ -13,7 +13,7 @@ COPY . .
 RUN cargo build --release
 RUN mv ./target/release/server-pong ./app
 
-FROM debian:stable-slim AS runtime
+FROM gcr.io/distroless/cc-debian12 AS runtime
 WORKDIR /app
 COPY --from=builder /app/app /usr/local/bin/
-ENTRYPOINT ["/usr/local/bin/app"]
+CMD ["/usr/local/bin/app"]
