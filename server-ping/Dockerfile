@@ -1,9 +1,19 @@
 # syntax=docker/dockerfile:1
 FROM golang:1.24 AS builder
+ARG upx_version=5.0.0
+
+RUN apt-get update && apt-get install -y --no-install-recommends xz-utils && \
+  curl -Ls https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz -o - | tar xvJf - -C /tmp && \
+  cp /tmp/upx-${upx_version}-amd64_linux/upx /usr/local/bin/ && \
+  chmod +x /usr/local/bin/upx && \
+  apt-get remove -y xz-utils && \
+  rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 COPY . .
 RUN go mod download
-RUN CGO_ENABLED=0 GOOS=linux go build -o /bin/server-ping ./main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags "-s -w" -o /bin/server-ping ./main.go
+RUN upx --best --lzma /bin/server-ping
 
 FROM gcr.io/distroless/static-debian12
 COPY --from=builder /bin/server-ping /bin/server-ping
