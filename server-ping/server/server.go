@@ -1,39 +1,36 @@
 package server
 
-import (
-	"fmt"
-	"net/http"
-)
+import "github.com/valyala/fasthttp"
 
-// Represents the running Server.
 type Server struct{}
 
-// Creates a new Server instance.
 func NewServer() *Server {
 	return &Server{}
 }
 
-// Runs the Server.
+// Run starts the server.
 func (s *Server) Run() error {
-	http.HandleFunc("/healthz", healthz)
-	http.HandleFunc("/ping", ping)
-
-	err := http.ListenAndServe(":8081", nil)
-	if err != nil {
-		return fmt.Errorf("serving http routes: %w", err)
+	mux := func(ctx *fasthttp.RequestCtx) {
+		switch string(ctx.Path()) {
+		case "/healthz":
+			healthz(ctx)
+		case "/ping":
+			ping(ctx)
+		default:
+			ctx.SetStatusCode(fasthttp.StatusNotFound)
+		}
 	}
 
-	return nil
+	return fasthttp.ListenAndServe(":8081", mux)
 }
 
-func ping(w http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodGet {
-		// only react on GET methods
+func ping(ctx *fasthttp.RequestCtx) {
+	if !ctx.IsGet() {
 		return
 	}
-	fmt.Fprintln(w, "ping")
+	ctx.WriteString("ping")
 }
 
-func healthz(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintln(w, "OK")
+func healthz(ctx *fasthttp.RequestCtx) {
+	ctx.WriteString("OK")
 }
