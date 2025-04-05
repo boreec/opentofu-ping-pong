@@ -1,19 +1,16 @@
 # syntax=docker/dockerfile:1
-FROM golang:1.24
+FROM golang:1.24 AS builder
 
-# Set destination for COPY
 WORKDIR /app
-
-# Download Go modules
-COPY go.mod ./
-RUN go mod tidy
 
 COPY . .
 
-# Build
-RUN CGO_ENABLED=0 GOOS=linux go build -o /server-ping
+RUN CGO_ENABLED=0 GOOS=linux go build -o /bin/server-ping ./main.go
+
+FROM scratch
+
+COPY --from=builder /bin/server-ping /bin/server-ping
 
 EXPOSE 8081
 
-# Run
-CMD ["/server-ping"]
+CMD ["/bin/server-ping"]
