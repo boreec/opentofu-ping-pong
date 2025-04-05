@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1
 FROM golang:1.24 AS builder
 ARG upx_version=5.0.0
 
@@ -12,10 +11,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends xz-utils && \
 WORKDIR /app
 COPY . .
 RUN go mod download
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags "-s -w" -o /bin/server-ping ./main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -gcflags=all="-l -B -wb=false" -ldflags="-w -s" -o /bin/server-ping
 RUN upx --best --lzma /bin/server-ping
 
-FROM gcr.io/distroless/static-debian12
+FROM scratch AS runtime
 COPY --from=builder /bin/server-ping /bin/server-ping
 EXPOSE 8081
 CMD ["/bin/server-ping"]
