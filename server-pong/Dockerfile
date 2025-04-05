@@ -16,4 +16,5 @@ RUN mv ./target/release/server-pong ./app
 FROM gcr.io/distroless/cc-debian12 AS runtime
 WORKDIR /app
 COPY --from=builder /app/app /usr/local/bin/
+EXPOSE 8082
 CMD ["/usr/local/bin/app"]
