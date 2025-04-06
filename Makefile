@@ -1,7 +1,9 @@
 GRAFANA_URL=$(shell minikube ip):30080
 
 clean:
-	minikube delete
+	minikube delete --all=true --purge=true && \
+	docker container stop $$(docker container ls -q) 2>/dev/null || true && \
+	docker rmi $$(docker images -q) 2>/dev/null || true
 
 cluster_ready:
 	@if minikube status | grep -q "Running"; then \
