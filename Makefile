@@ -14,7 +14,7 @@ deploy: cluster_ready
 	cd infrastructure && \
 	sh -c 'eval $$(minikube docker-env) && \
 		tofu init -compact-warnings -lock=false -input=false -no-color && \
-		tofu plan && \
+		tofu plan -compact-warnings -concise -lock=false -input=false -no-color && \
 		tofu apply --auto-approve'
 
 open-grafana:
