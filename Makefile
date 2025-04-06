@@ -12,7 +12,10 @@ cluster_ready:
 
 deploy: cluster_ready
 	cd infrastructure && \
-  sh -c 'eval $$(minikube docker-env) && tofu init && tofu plan && tofu apply --auto-approve'
+	sh -c 'eval $$(minikube docker-env) && \
+		tofu init -compact-warnings -lock=false -input=false -no-color && \
+		tofu plan && \
+		tofu apply --auto-approve'
 
 open-grafana:
 	@echo "Opening Grafana at http://$(GRAFANA_URL)"
