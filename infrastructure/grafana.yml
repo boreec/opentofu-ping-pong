@@ -8,8 +8,8 @@ grafana.ini:
     org_name: Main Org.
     org_role: Admin
 
-extraConfigMaps:
-  datasources.yaml: |
+datasources:
+  datasources.yaml:
     apiVersion: 1
     datasources:
       - name: Prometheus
