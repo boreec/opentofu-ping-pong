@@ -14,10 +14,26 @@ resource "helm_release" "prometheus" {
   values = [file("${path.module}/prometheus.yml")]
 }
 
+resource "kubernetes_config_map" "grafana_dashboards" {
+  data = {
+    "my-custom-dashboard.json" = file("${path.module}/dashboard.json")
+  }
+  metadata {
+    namespace = "default"
+    name      = "grafana-dashboards"
+    labels = {
+      grafana_dashboard = "1"
+    }
+  }
+}
+
 resource "helm_release" "grafana" {
   name       = "grafana"
   chart      = "grafana"
-  depends_on = [helm_release.prometheus]
+  depends_on = [
+    helm_release.prometheus,
+    kubernetes_config_map.grafana_dashboards
+  ]
   force_update = true
   set = [
     {
@@ -31,6 +47,19 @@ resource "helm_release" "grafana" {
     {
       name  = "persistence.enabled"
       value = "false"
+    },
+    {
+      name  = "sidecar.dashboards.enabled"
+      value = "true"
+    },
+    {
+      name = "sidecar.dashboards.label"
+      value = "grafana_dashboard"
+    },
+    {
+      name = "sidecar.dashboards.labelValue"
+      value = "1"
+      type = "string"
     },
   ]
   recreate_pods = true
